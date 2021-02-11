@@ -98,6 +98,7 @@ if __name__ == "__main__":
         model.load_state_dict(torch.load(opt.weights_path))
 
     print("Compute mAP...")
+    outfile= open("Result.txt", 'w')
 
     precision, recall, AP, f1, ap_class = evaluate(
         model,
@@ -109,8 +110,14 @@ if __name__ == "__main__":
         batch_size=opt.batch_size,
     )
 
-    print("Average Precisions:")
+    #print("Average Precisions:")
+    outfile.write("Average Precisions:")
     for i, c in enumerate(ap_class):
         print(f"+ Class '{c}' ({class_names[c]}) - AP: {AP[i]}")
+        outfile.write(f"+ Class '{c}' ({class_names[c]}) - AP: {AP[i]}")
 
-    print(f"mAP: {AP.mean()}")
+    #print(f"mAP: {AP.mean()}")
+    
+    # Write scores to a file
+    outfile.write(opt)
+    outfile.write(f"mAP: {AP.mean()}")
